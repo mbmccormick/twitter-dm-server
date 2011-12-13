@@ -7,7 +7,7 @@ public class SMTPServerConnection implements Runnable
     private SMTPServer _host = null; 
     Socket _clientSocket = null;
     
-    POPServerConnection(SMTPServer host, Socket clientSocket)
+    SMTPServerConnection(SMTPServer host, Socket clientSocket)
     {
         _host = host;
         _clientSocket = clientSocket;
