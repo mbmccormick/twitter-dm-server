@@ -34,7 +34,7 @@ public class POPServerConnection implements Runnable
 
             // read each line
             String line;
-            while (state < 2 && (line = br.readLine()) != null)
+            while (_state < 2 && (line = br.readLine()) != null)
             {
                 if (_state == 0)
                 {
