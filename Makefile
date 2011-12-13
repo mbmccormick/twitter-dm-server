@@ -1,10 +1,10 @@
 all: POPServer SMTPServer Server
 
 POPServer:
-	javac POPServerConnection.java POPServer.java
+	javac -classpath .:twitter4j-core.jar POPServerConnection.java POPServer.java
 
 SMTPServer:
-	javac SMTPServerConnection.java SMTPServer.java
+	javac -classpath .:twitter4j-core.jar SMTPServerConnection.java SMTPServer.java
 
 Server:
 	javac Server.java

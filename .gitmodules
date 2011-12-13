@@ -1,0 +1,3 @@
+[submodule "twitter4j"]
+	path = twitter4j
+	url = git://github.com/yusuke/twitter4j.git

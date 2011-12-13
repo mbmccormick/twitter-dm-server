@@ -4,7 +4,7 @@ import java.net.*;
 
 public class POPServer implements Runnable
 {
-    private int _port = 110;
+    private int _port = 11000;
     ArrayList<POPServerConnection> _connections = null;
     
     POPServer()

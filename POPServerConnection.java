@@ -2,6 +2,9 @@ import java.util.*;
 import java.io.*; 
 import java.net.*;
 
+import twitter4j.*;
+import twitter4j.conf.*;
+
 public class POPServerConnection implements Runnable
 {
     private POPServer _host = null; 
@@ -52,6 +55,16 @@ public class POPServerConnection implements Runnable
                         }
                         
                         _password = line.substring(5, line.length());
+
+ConfigurationBuilder cb = new ConfigurationBuilder();
+cb.setDebugEnabled(true)
+  .setOAuthConsumerKey("*********************")
+  .setOAuthConsumerSecret("******************************************")
+  .setOAuthAccessToken("**************************************************")
+  .setOAuthAccessTokenSecret("******************************************");
+TwitterFactory tf = new TwitterFactory(cb.build());
+Twitter twitter = tf.getInstance();
+
                         out.println("+OK welcome " + _username);
                         
                         // enter transaction state
