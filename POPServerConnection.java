@@ -2,8 +2,11 @@ import java.util.*;
 import java.io.*; 
 import java.net.*;
 
-import twitter4j.*;
-import twitter4j.conf.*;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.User;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class POPServerConnection implements Runnable
 {
@@ -74,7 +77,7 @@ public class POPServerConnection implements Runnable
                             // enter transaction state
                             _state = 1;
                         }
-                        catch (Exception ex)
+                        catch (TwitterException te)
                         {
                             out.println("-ERR invalid credentials");
                         }
