@@ -90,34 +90,60 @@ public class POPServerConnection implements Runnable
                 {
                     if (line.startsWith("STAT"))
                     {
-                        List<DirectMessage> messages = _twitter.getDirectMessages();
-                        int n = messages.size();
-                        int m = 0;
-                        for (DirectMessage d : messages)
+                        try
                         {
-                            m += d.getText().length();
+                            List<DirectMessage> messages = _twitter.getDirectMessages();
+                            
+                            int n = messages.size();
+                            int m = 0;
+                            for (DirectMessage d : messages)
+                            {
+                                m += d.getText().length();
+                            }
+                            
+                            out.println("+OK " + n + " " + m);
                         }
-                        
-                        out.println("+OK " + n + " " + m);
+                        catch (TwitterException te)
+                        {
+                            out.println("-ERR " + te.getMessage());
+                        }
                     }
                     else if (line.startsWith("LIST"))
                     {
-                        List<DirectMessage> messages = _twitter.getDirectMessages();
-                        int n = messages.size();
-                        
-                        if (n == 1)                        
-                            out.println("+OK " + n + " message");
-                        else
-                            out.println("+OK " + n + " messages");
-                        
-                        for (DirectMessage d : messages)
+                        try
                         {
-                            out.println(d.getId() + " " + d.getText().length());
+                            List<DirectMessage> messages = _twitter.getDirectMessages();
+                            
+                            int n = messages.size();                            
+                            if (n == 1)                        
+                                out.println("+OK " + n + " message");
+                            else
+                                out.println("+OK " + n + " messages");
+                            
+                            for (DirectMessage d : messages)
+                            {
+                                out.println(d.getId() + " " + d.getText().length());
+                            }
+                        }
+                        catch (TwitterException te)
+                        {
+                            out.println("-ERR " + te.getMessage());
                         }
                     }
                     else if (line.startsWith("RETR"))
                     {
-                        
+                        try
+                        {
+                            DirectMessage message = _twitter.showDirectMessage(line.substring(5, line.length()));
+                            
+                            out.println("+OK " + message.getText().length() + " octets");
+                            out.println(message.getText());
+                            out.println(".");
+                        }
+                        catch (TwitterException te)
+                        {
+                            out.println("-ERR " + te.getMessage());
+                        }
                     }
                     else if (line.startsWith("DELE"))
                     {
