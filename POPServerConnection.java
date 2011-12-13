@@ -2,10 +2,7 @@ import java.util.*;
 import java.io.*; 
 import java.net.*;
 
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
+import twitter4j.*;
 import twitter4j.conf.*;
 
 public class POPServerConnection implements Runnable
