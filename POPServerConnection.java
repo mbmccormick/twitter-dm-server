@@ -44,31 +44,40 @@ public class POPServerConnection implements Runnable
                     if (line.startsWith("USER"))
                     {
                         _username = line.substring(5, line.length());
-                        out.println("+OK hello " + _username + ", please authenticate");
+                        out.println("+OK hello, please authenticate");
                     }
                     else if (line.startsWith("PASS"))
                     {
                         if (_username == null)
                         {
-                            out.println("-ERR please login first");
+                            out.println("-ERR please send USER first");
                             continue;
                         }
                         
                         _password = line.substring(5, line.length());
 
-                        ConfigurationBuilder cb = new ConfigurationBuilder();
-                        cb.setDebugEnabled(true)
-                          .setOAuthConsumerKey("5gRxJYfsiP70XJjySPZrmA")
-                          .setOAuthConsumerSecret("8NNYTQc3g21Aiwec6r61HQDPW442Q9jBp4RissEEG0")
-                          .setOAuthAccessToken(_username)
-                          .setOAuthAccessTokenSecret(_password);
-                        TwitterFactory tf = new TwitterFactory(cb.build());
-                        Twitter twitter = tf.getInstance();
+                        try
+                        {
+                            ConfigurationBuilder cb = new ConfigurationBuilder();
+                            cb.setDebugEnabled(true)
+                              .setOAuthConsumerKey("5gRxJYfsiP70XJjySPZrmA")
+                              .setOAuthConsumerSecret("8NNYTQc3g21Aiwec6r61HQDPW442Q9jBp4RissEEG0")
+                              .setOAuthAccessToken(_username)
+                              .setOAuthAccessTokenSecret(_password);
+                            TwitterFactory tf = new TwitterFactory(cb.build());
+                            Twitter twitter = tf.getInstance();
+                            
+                            User user = twitter.verifyCredentials();
 
-                        out.println("+OK welcome " + _username);
-                        
-                        // enter transaction state
-                        _state = 1;
+                            out.println("+OK welcome " + user.getScreenName());
+                            
+                            // enter transaction state
+                            _state = 1;
+                        }
+                        catch (TwitterException te)
+                        {
+                            out.println("-ERR invalid credentials");
+                        }
                     }
                 }
                 else if (_state == 1)
