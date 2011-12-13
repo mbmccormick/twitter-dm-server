@@ -82,11 +82,18 @@ public class POPServerConnection implements Runnable
                     }
                     else if (line.startsWith("QUIT"))
                     {
+                        out.println("+OK goodbye");
+                        
                         // enter update state
                         _state = 2;
                     }
                 }
             }
+            
+            out.close();
+            br.close();
+            
+            _clientSocket.close();
         }
         catch (Exception ex)
         {
