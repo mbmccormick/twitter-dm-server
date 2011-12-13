@@ -40,7 +40,7 @@ public class POPServerConnection implements Runnable
                 {
                     if (line.startsWith("USER"))
                     {
-                        _username = line.substring(5, line.length() - 1);
+                        _username = line.substring(5, line.length());
                         out.println("+OK hello " + _username + ", please authenticate");
                     }
                     else if (line.startsWith("PASS"))
@@ -51,7 +51,7 @@ public class POPServerConnection implements Runnable
                             continue;
                         }
                         
-                        _password = line.substring(5, line.length() - 1);
+                        _password = line.substring(5, line.length());
                         out.println("+OK welcome " + _username);
                         
                         // enter transaction state
