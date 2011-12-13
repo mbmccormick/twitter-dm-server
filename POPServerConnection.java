@@ -91,7 +91,7 @@ public class POPServerConnection implements Runnable
                     if (line.startsWith("STAT"))
                     {
                         List<DirectMessage> messages = _twitter.getDirectMessages();
-                        int n = messages.length();
+                        int n = messages.size();
                         int m = 0;
                         for (DirectMessage d : messages)
                         {
