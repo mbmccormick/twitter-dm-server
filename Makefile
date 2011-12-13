@@ -7,7 +7,7 @@ SMTPServer:
 	javac -classpath twitter4j-core-2.2.5.jar SMTPServerConnection.java SMTPServer.java
 
 Server:
-	javac -classpath twitter4j-core-2.2.5.jar Server.java
+	javac Server.java
 
 clean:
 	rm -f *.class
