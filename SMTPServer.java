@@ -35,7 +35,7 @@ public class SMTPServer implements Runnable
         }
         catch (Exception ex)
         {
-            // TODO: handle this exception
+            System.out.println(ex.getMessage());
         }
     }
 }
