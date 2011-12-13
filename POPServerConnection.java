@@ -18,6 +18,8 @@ public class POPServerConnection implements Runnable
     private String _username = null;
     private String _password = null;
     
+    private Twitter _twitter;
+    
     POPServerConnection(POPServer host, Socket clientSocket)
     {
         _host = host;
@@ -68,9 +70,9 @@ public class POPServerConnection implements Runnable
                               .setOAuthAccessToken(_username)
                               .setOAuthAccessTokenSecret(_password);
                             TwitterFactory tf = new TwitterFactory(cb.build());
-                            Twitter twitter = tf.getInstance();
+                            _twitter = tf.getInstance();
                             
-                            User user = twitter.verifyCredentials();
+                            User user = _twitter.verifyCredentials();
 
                             out.println("+OK welcome " + user.getScreenName());
                             
@@ -87,7 +89,15 @@ public class POPServerConnection implements Runnable
                 {
                     if (line.startsWith("STAT"))
                     {
+                        List<DirectMessage> messages = twitter.getDirectMessages();
+                        int n = messages.length();
+                        int m = 0;
+                        for (DirectMessage d : messages)
+                        {
+                            m += d.getText().length();
+                        }
                         
+                        out.println("+OK " + n + " " + m);
                     }
                     else if (line.startsWith("LIST"))
                     {
