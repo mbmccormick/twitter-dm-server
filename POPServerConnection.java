@@ -41,12 +41,18 @@ public class POPServerConnection implements Runnable
                     if (line.startsWith("USER"))
                     {
                         _username = line.substring(5, line.length() - 1);
-                        out.println("+OK");
+                        out.println("+OK hello " + _username + ", please authenticate");
                     }
                     else if (line.startsWith("PASS"))
                     {
+                        if (_username == null)
+                        {
+                            out.println("-ERR please login first");
+                            continue;
+                        }
+                        
                         _password = line.substring(5, line.length() - 1);
-                        out.println("+OK");
+                        out.println("+OK welcome " + _username);
                         
                         // enter transaction state
                         _state = 1;
