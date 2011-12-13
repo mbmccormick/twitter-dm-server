@@ -134,7 +134,7 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            DirectMessage message = _twitter.showDirectMessage(line.substring(5, line.length()));
+                            DirectMessage message = _twitter.showDirectMessage(Long.parseLong(line.substring(5, line.length())));
                             
                             out.println("+OK " + message.getText().length() + " octets");
                             out.println(message.getText());
