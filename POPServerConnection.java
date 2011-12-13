@@ -56,14 +56,14 @@ public class POPServerConnection implements Runnable
                         
                         _password = line.substring(5, line.length());
 
-ConfigurationBuilder cb = new ConfigurationBuilder();
-cb.setDebugEnabled(true)
-  .setOAuthConsumerKey("*********************")
-  .setOAuthConsumerSecret("******************************************")
-  .setOAuthAccessToken("**************************************************")
-  .setOAuthAccessTokenSecret("******************************************");
-TwitterFactory tf = new TwitterFactory(cb.build());
-Twitter twitter = tf.getInstance();
+                        ConfigurationBuilder cb = new ConfigurationBuilder();
+                        cb.setDebugEnabled(true)
+                          .setOAuthConsumerKey("5gRxJYfsiP70XJjySPZrmA")
+                          .setOAuthConsumerSecret("8NNYTQc3g21Aiwec6r61HQDPW442Q9jBp4RissEEG0")
+                          .setOAuthAccessToken(_username)
+                          .setOAuthAccessTokenSecret(_password);
+                        TwitterFactory tf = new TwitterFactory(cb.build());
+                        Twitter twitter = tf.getInstance();
 
                         out.println("+OK welcome " + _username);
                         
