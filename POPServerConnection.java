@@ -102,7 +102,18 @@ public class POPServerConnection implements Runnable
                     }
                     else if (line.startsWith("LIST"))
                     {
+                        List<DirectMessage> messages = _twitter.getDirectMessages();
+                        int n = messages.size();
                         
+                        if (n == 1)                        
+                            out.println("+OK " + n + " message");
+                        else
+                            out.println("+OK " + n + " messages");
+                        
+                        for (DirectMessage d : messages)
+                        {
+                            out.println(d.getId() + " " + d.getText().length());
+                        }
                     }
                     else if (line.startsWith("RETR"))
                     {
