@@ -77,7 +77,7 @@ public class POPServerConnection implements Runnable
                             // enter transaction state
                             _state = 1;
                         }
-                        catch (TwitterException te)
+                        catch (Exception ex)
                         {
                             out.println("-ERR invalid credentials");
                         }
