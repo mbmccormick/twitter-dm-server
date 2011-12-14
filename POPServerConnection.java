@@ -135,9 +135,11 @@ public class POPServerConnection implements Runnable
                             else
                                 out.println("+OK " + n + " messages");
                             
+                            int i = 0;
                             for (DirectMessage d : messages)
                             {
-                                out.println(d.getId() + " " + d.getText().length());
+                                out.println(i + " " + d.getText().length());
+                                i++;
                             }
                             
                             out.println(".");
@@ -155,9 +157,11 @@ public class POPServerConnection implements Runnable
                             
                             out.println("+OK");
                             
+                            int i = 0;
                             for (DirectMessage d : messages)
                             {
-                                out.println(d.getId() + " " + d.getId());
+                                out.println(i + " " + d.getId());
+                                i++;
                             }
                             
                             out.println(".");
