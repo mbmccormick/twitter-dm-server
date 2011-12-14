@@ -50,7 +50,11 @@ public class POPServerConnection implements Runnable
                 
                 if (_state == 0)
                 {
-                    if (line.startsWith("USER"))
+                    if (line.startsWith("AUTH"))
+                    {
+                        out.println("-ERR not supported");
+                    }
+                    else if (line.startsWith("USER"))
                     {
                         _username = line.substring(5, line.length());
                         out.println("+OK hello, please authenticate");
