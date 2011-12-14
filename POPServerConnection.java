@@ -223,6 +223,10 @@ public class POPServerConnection implements Runnable
             List<DirectMessage> messages;
             do {
                 messages = _twitter.getDirectMessages(paging);
+                for (DirectMessage message : messages) {
+                    System.out.println("From: @" + message.getSenderScreenName() + " id:" + message.getId() + " - "
+                            + message.getText());
+                }
                 paging.setPage(paging.getPage() + 1);
             } while (messages.size() > 0 && paging.getPage() < 10);    
             
