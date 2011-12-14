@@ -88,7 +88,7 @@ public class POPServerConnection implements Runnable
                             out.println("-ERR invalid credentials");
                         }
                     }
-                    else if (line.startsWith("CAPA")
+                    else if (line.startsWith("CAPA"))
                     {
                         out.println("+OK capability listing follows");
                         out.println("USER");
