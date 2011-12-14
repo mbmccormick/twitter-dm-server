@@ -88,6 +88,13 @@ public class POPServerConnection implements Runnable
                             out.println("-ERR invalid credentials");
                         }
                     }
+                    else if (line.startsWith("CAPA")
+                    {
+                        out.println("+OK capability listing follows");
+                        out.println("USER");
+                        out.println("LOGIN-DELAY 900");
+                        out.println(".");
+                    }
                 }
                 else if (_state == 1)
                 {
