@@ -171,59 +171,39 @@ public class POPServerConnection implements Runnable
                     }
                     else if (line.startsWith("UIDL"))
                     {
-                        try
-                        {
-                            out.println("+OK");
+                        out.println("+OK");
                             
-                            int i = 0;
-                            for (DirectMessage d : _messages)
-                            {
-                                out.println(i + " " + d.getId());
-                                i++;
-                            }
-                            
-                            out.println(".");
-                        }
-                        catch (TwitterException te)
+                        int i = 0;
+                        for (DirectMessage d : _messages)
                         {
-                            out.println("-ERR " + te.getMessage());
+                            out.println(i + " " + d.getId());
+                            i++;
                         }
+                        
+                        out.println(".");
                     }
                     else if (line.startsWith("RETR"))
                     {
-                        try
-                        {
-                            DirectMessage message = _messages.get(Integer.parseInt(line.substring(5, line.length())));
-                            
-                            SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-                            
-                            out.println("+OK " + message.getText().length() + " octets");
-                            out.println("From: " + message.getSender().getScreenName() + "@twitter.com (" + message.getSender().getName() + ")");
-                            out.println("Subject: Direct Message from " + message.getSender().getName());
-                            out.println("Date: " + formatter.format(message.getCreatedAt()));
-                            out.println("Message-Id: <" + message.getId() + "@twitter.com>");
-                            out.println("");
-                            out.println(message.getText());
-                            out.println(".");
-                        }
-                        catch (TwitterException te)
-                        {
-                            out.println("-ERR " + te.getMessage());
-                        }
+                        DirectMessage message = _messages.get(Integer.parseInt(line.substring(5, line.length())));
+                        
+                        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+                        
+                        out.println("+OK " + message.getText().length() + " octets");
+                        out.println("From: " + message.getSender().getScreenName() + "@twitter.com (" + message.getSender().getName() + ")");
+                        out.println("Subject: Direct Message from " + message.getSender().getName());
+                        out.println("Date: " + formatter.format(message.getCreatedAt()));
+                        out.println("Message-Id: <" + message.getId() + "@twitter.com>");
+                        out.println("");
+                        out.println(message.getText());
+                        out.println(".");
                     }
                     else if (line.startsWith("DELE"))
                     {
-                        try
-                        {
-                            DirectMessage message = _messages.get(Integer.parseInt(line.substring(5, line.length())));
-                            _messagesToDelete.add(message.getId());
+                        DirectMessage message = _messages.get(Integer.parseInt(line.substring(5, line.length())));
+                        _messagesToDelete.add(message.getId());
+                    
+                        out.println("+OK message " + message.getId() + " marked for deletion");
                         
-                            out.println("+OK message " + message.getId() + " marked for deletion");
-                        }
-                        catch (TwitterException te)
-                        {
-                            out.println("-ERR " + te.getMessage());
-                        }
                     }
                     else if (line.startsWith("NOOP"))
                     {
