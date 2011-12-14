@@ -16,7 +16,7 @@ public class POPServerConnection implements Runnable
     private Socket _clientSocket = null;
     
     private int _state = 0; // 0 = authorization, 1 = transaction, 2 = update
-    private List<long> _messagesToDelete;
+    private List<Long> _messagesToDelete;
     
     private String _username = null;
     private String _password = null;
@@ -27,7 +27,7 @@ public class POPServerConnection implements Runnable
     {
         _host = host;
         _clientSocket = clientSocket;
-        _messagesToDelete = new List<long>();
+        _messagesToDelete = new ArrayList<Long>();
     }
 
     public void run()
