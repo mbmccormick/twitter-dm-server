@@ -1,6 +1,7 @@
 import java.util.*; 
 import java.io.*; 
 import java.net.*;
+import java.text.*;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -136,7 +137,14 @@ public class POPServerConnection implements Runnable
                         {
                             DirectMessage message = _twitter.showDirectMessage(Long.parseLong(line.substring(5, line.length())));
                             
+                            SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss +0000 yyyy");
+                            
                             out.println("+OK " + message.getText().length() + " octets");
+                            out.println("From: " + message.getSender().getScreenName() + "@twitter.com (" + message.getSender().getName() + ")");
+                            out.println("Subject: Direct Message from " + message.getSender().getName());
+                            out.println("Date: " + formatter.format(message.getCreatedAt()));
+                            out.println("Message-Id: <" + message.getId() + "@twitter.com>");
+                            out.println("");
                             out.println(message.getText());
                             out.println(".");
                         }
@@ -174,4 +182,3 @@ public class POPServerConnection implements Runnable
         }
     }
 }
-
