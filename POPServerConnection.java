@@ -16,6 +16,7 @@ public class POPServerConnection implements Runnable
     private Socket _clientSocket = null;
     
     private int _state = 0; // 0 = authorization, 1 = transaction, 2 = update
+    private List<long> _messagesToDelete;
     
     private String _username = null;
     private String _password = null;
@@ -26,6 +27,7 @@ public class POPServerConnection implements Runnable
     {
         _host = host;
         _clientSocket = clientSocket;
+        _messagesToDelete = new List<long>();
     }
 
     public void run()
@@ -195,7 +197,17 @@ public class POPServerConnection implements Runnable
                     }
                     else if (line.startsWith("DELE"))
                     {
-                        out.println("+OK");
+                        try
+                        {
+                            DirectMessage message = _twitter.getDirectMessages().get(Integer.parseInt(line.substring(5, line.length())));
+                            _messagesToDelete.add(message.getId());
+                        
+                            out.println("+OK message " + message.getId() + " marked for deletion");
+                        }
+                        catch (TwitterException te)
+                        {
+                            out.println("-ERR " + te.getMessage());
+                        }
                     }
                     else if (line.startsWith("NOOP"))
                     {
@@ -208,6 +220,21 @@ public class POPServerConnection implements Runnable
                         // enter update state
                         _state = 2;
                     }
+                }
+            }
+            
+            if (_state == 2)
+            {
+                try
+                {
+                    for (Long l : _messagesToDelete)
+                    {
+                        _twitter.destroyDirectMessage(l);
+                    }
+                }
+                catch (TwitterException te)
+                {
+                    out.println("-ERR " + te.getMessage());
                 }
             }
             
