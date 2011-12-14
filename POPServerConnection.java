@@ -230,6 +230,8 @@ public class POPServerConnection implements Runnable
                 paging.setPage(paging.getPage() + 1);
             } while (messages.size() > 0 && paging.getPage() < 10);
             
+            System.out.println("retrieved " + _messages.size() + " messages");
+            
             return true;
         }
         catch (TwitterException te)
