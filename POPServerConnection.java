@@ -195,7 +195,7 @@ public class POPServerConnection implements Runnable
                     }
                     else if (line.startsWith("DELE"))
                     {
-                        
+                        out.println("+OK");
                     }
                     else if (line.startsWith("NOOP"))
                     {
