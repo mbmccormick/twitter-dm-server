@@ -111,15 +111,7 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            Paging paging = new Paging(1);
-                            List<DirectMessage> messages;
-                            do
-                            {
-                                messages = _twitter.getDirectMessages(paging);                                
-                                _messages.addAll(messages);
-                                paging.setPage(paging.getPage() + 1);
-                                
-                            } while (messages.size() > 0 && paging.getPage() < 10);
+                            updateMessages();
                             
                             int n = _messages.size();
                             int m = 0;
@@ -139,15 +131,7 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            Paging paging = new Paging(1);
-                            List<DirectMessage> messages;
-                            do
-                            {
-                                messages = _twitter.getDirectMessages(paging);                                
-                                _messages.addAll(messages);
-                                paging.setPage(paging.getPage() + 1);
-                                
-                            } while (messages.size() > 0 && paging.getPage() < 10);
+                            updateMessages();
                             
                             int n = _messages.size();                            
                             if (n == 1)                        
@@ -243,5 +227,18 @@ public class POPServerConnection implements Runnable
         {
             // TODO: handle this exception
         }
+    }
+    
+    private void updateMessages()
+    {
+        Paging paging = new Paging(1);
+        List<DirectMessage> messages;
+        do {
+            messages = _twitter.getDirectMessages(paging);
+            paging.setPage(paging.getPage() + 1);
+        } while (messages.size() > 0 && paging.getPage() < 10);    
+        
+        _messages.clear();
+        _messages.addAll(messages);
     }
 }
