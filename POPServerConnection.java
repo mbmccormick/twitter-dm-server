@@ -236,6 +236,7 @@ public class POPServerConnection implements Runnable
         }
         catch (TwitterException te)
         {
+            System.out.println(te.getMessage());
             return false;
         }
     }
