@@ -109,49 +109,35 @@ public class POPServerConnection implements Runnable
                 {
                     if (line.startsWith("STAT"))
                     {
-                        try
-                        {
-                            updateMessages();
+                        updateMessages();
                             
-                            int n = _messages.size();
-                            int m = 0;
-                            for (DirectMessage d : _messages)
-                            {
-                                m += d.getText().length();
-                            }
-                            
-                            out.println("+OK " + n + " " + m);
-                        }
-                        catch (TwitterException te)
+                        int n = _messages.size();
+                        int m = 0;
+                        for (DirectMessage d : _messages)
                         {
-                            out.println("-ERR " + te.getMessage());
+                            m += d.getText().length();
                         }
+                        
+                        out.println("+OK " + n + " " + m);
                     }
                     else if (line.startsWith("LIST"))
                     {
-                        try
+                        updateMessages();
+                            
+                        int n = _messages.size();                            
+                        if (n == 1)                        
+                            out.println("+OK " + n + " message");
+                        else
+                            out.println("+OK " + n + " messages");
+                        
+                        int i = 0;
+                        for (DirectMessage d : _messages)
                         {
-                            updateMessages();
-                            
-                            int n = _messages.size();                            
-                            if (n == 1)                        
-                                out.println("+OK " + n + " message");
-                            else
-                                out.println("+OK " + n + " messages");
-                            
-                            int i = 0;
-                            for (DirectMessage d : _messages)
-                            {
-                                out.println(i + " " + d.getText().length());
-                                i++;
-                            }
-                            
-                            out.println(".");
+                            out.println(i + " " + d.getText().length());
+                            i++;
                         }
-                        catch (TwitterException te)
-                        {
-                            out.println("-ERR " + te.getMessage());
-                        }
+                        
+                        out.println(".");
                     }
                     else if (line.startsWith("UIDL"))
                     {
@@ -229,16 +215,25 @@ public class POPServerConnection implements Runnable
         }
     }
     
-    private void updateMessages()
+    private boolean updateMessages()
     {
-        Paging paging = new Paging(1);
-        List<DirectMessage> messages;
-        do {
-            messages = _twitter.getDirectMessages(paging);
-            paging.setPage(paging.getPage() + 1);
-        } while (messages.size() > 0 && paging.getPage() < 10);    
-        
-        _messages.clear();
-        _messages.addAll(messages);
+        try
+        {
+            Paging paging = new Paging(1);
+            List<DirectMessage> messages;
+            do {
+                messages = _twitter.getDirectMessages(paging);
+                paging.setPage(paging.getPage() + 1);
+            } while (messages.size() > 0 && paging.getPage() < 10);    
+            
+            _messages.clear();
+            _messages.addAll(messages);
+            
+            return true;
+        }
+        catch (TwitterException te)
+        {
+            return false;
+        }
     }
 }
