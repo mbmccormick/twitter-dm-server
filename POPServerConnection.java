@@ -226,7 +226,7 @@ public class POPServerConnection implements Runnable
             do {
                 messages = _twitter.getDirectMessages(paging);
                 _messages.addAll(messages);
-                
+                System.out.println(messages.size());
                 paging.setPage(paging.getPage() + 1);
             } while (messages.size() > 0 && paging.getPage() < 10);
             
