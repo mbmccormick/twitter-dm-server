@@ -119,18 +119,16 @@ public class POPServerConnection implements Runnable
                             
                             int n = messages.size();                            
                             if (n == 1)                        
-                                out.print("+OK " + n + " message" + "\r\n");
+                                out.println("+OK " + n + " message");
                             else
-                                out.print("+OK " + n + " messages" + "\r\n");
+                                out.println("+OK " + n + " messages");
                             
                             for (DirectMessage d : messages)
                             {
-                                out.print(d.getId() + " " + d.getText().length() + "\r\n");
+                                out.println(d.getId() + " " + d.getText().length());
                             }
                             
-                            out.print("." + "\r\n");
-                            
-                            out.flush();
+                            out.println(".");
                         }
                         catch (TwitterException te)
                         {
