@@ -16,6 +16,7 @@ public class POPServerConnection implements Runnable
     private Socket _clientSocket = null;
     
     private int _state = 0; // 0 = authorization, 1 = transaction, 2 = update
+    private List<DirectMessage> _messages;
     private List<Long> _messagesToDelete;
     
     private String _username = null;
@@ -109,11 +110,19 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            List<DirectMessage> messages = _twitter.getDirectMessages();
+                            Paging paging = new Paging(1);
+                            List<DirectMessage> messages;
+                            do
+                            {
+                                messages = _twitter.getDirectMessages(paging);                                
+                                _messages.addAll(messages);
+                                paging.setPage(paging.getPage() + 1);
+                                
+                            } while (messages.size() > 0 && paging.getPage() < 10);
                             
-                            int n = messages.size();
+                            int n = _messages.size();
                             int m = 0;
-                            for (DirectMessage d : messages)
+                            for (DirectMessage d : _messages)
                             {
                                 m += d.getText().length();
                             }
@@ -129,16 +138,24 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            List<DirectMessage> messages = _twitter.getDirectMessages();
+                            Paging paging = new Paging(1);
+                            List<DirectMessage> messages;
+                            do
+                            {
+                                messages = _twitter.getDirectMessages(paging);                                
+                                _messages.addAll(messages);
+                                paging.setPage(paging.getPage() + 1);
+                                
+                            } while (messages.size() > 0 && paging.getPage() < 10);
                             
-                            int n = messages.size();                            
+                            int n = _messages.size();                            
                             if (n == 1)                        
                                 out.println("+OK " + n + " message");
                             else
                                 out.println("+OK " + n + " messages");
                             
                             int i = 0;
-                            for (DirectMessage d : messages)
+                            for (DirectMessage d : _messages)
                             {
                                 out.println(i + " " + d.getText().length());
                                 i++;
@@ -155,12 +172,10 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            List<DirectMessage> messages = _twitter.getDirectMessages();
-                            
                             out.println("+OK");
                             
                             int i = 0;
-                            for (DirectMessage d : messages)
+                            for (DirectMessage d : _messages)
                             {
                                 out.println(i + " " + d.getId());
                                 i++;
@@ -177,7 +192,7 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            DirectMessage message = _twitter.getDirectMessages().get(Integer.parseInt(line.substring(5, line.length())));
+                            DirectMessage message = _messages.get(Integer.parseInt(line.substring(5, line.length())));
                             
                             SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
                             
@@ -199,7 +214,7 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            DirectMessage message = _twitter.getDirectMessages().get(Integer.parseInt(line.substring(5, line.length())));
+                            DirectMessage message = _messages.get(Integer.parseInt(line.substring(5, line.length())));
                             _messagesToDelete.add(message.getId());
                         
                             out.println("+OK message " + message.getId() + " marked for deletion");
