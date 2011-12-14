@@ -219,19 +219,16 @@ public class POPServerConnection implements Runnable
     {
         try
         {
+            _messages.clear();
+                        
             Paging paging = new Paging(1);
             List<DirectMessage> messages;
             do {
                 messages = _twitter.getDirectMessages(paging);
-                for (DirectMessage message : messages) {
-                    System.out.println("From: @" + message.getSenderScreenName() + " id:" + message.getId() + " - "
-                            + message.getText());
-                }
+                _messages.addAll(messages);
+                
                 paging.setPage(paging.getPage() + 1);
-            } while (messages.size() > 0 && paging.getPage() < 10);    
-            
-            _messages.clear();
-            _messages.addAll(messages);
+            } while (messages.size() > 0 && paging.getPage() < 10);
             
             return true;
         }
