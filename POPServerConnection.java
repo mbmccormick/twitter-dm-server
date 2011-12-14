@@ -175,7 +175,7 @@ public class POPServerConnection implements Runnable
                     {
                         try
                         {
-                            DirectMessage message = _twitter.showDirectMessage(Long.parseLong(line.substring(5, line.length())));
+                            DirectMessage message = _twitter.getDirectMessages()[Integer.parseInt(line.substring(5, line.length()))];
                             
                             SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss +0000 yyyy");
                             
