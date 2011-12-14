@@ -46,6 +46,8 @@ public class POPServerConnection implements Runnable
             String line;
             while (_state < 2 && (line = br.readLine()) != null)
             {
+                System.out.println(line);
+                
                 if (_state == 0)
                 {
                     if (line.startsWith("USER"))
