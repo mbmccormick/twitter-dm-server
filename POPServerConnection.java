@@ -97,6 +97,7 @@ public class POPServerConnection implements Runnable
                         out.println("+OK capability listing follows");
                         out.println("USER");
                         out.println("LOGIN-DELAY 900");
+                        out.println("UIDL");
                         out.println(".");
                     }
                 }
@@ -137,6 +138,26 @@ public class POPServerConnection implements Runnable
                             for (DirectMessage d : messages)
                             {
                                 out.println(d.getId() + " " + d.getText().length());
+                            }
+                            
+                            out.println(".");
+                        }
+                        catch (TwitterException te)
+                        {
+                            out.println("-ERR " + te.getMessage());
+                        }
+                    }
+                    else if (line.startsWith("UIDL"))
+                    {
+                        try
+                        {
+                            List<DirectMessage> messages = _twitter.getDirectMessages();
+                            
+                            out.println("+OK");
+                            
+                            for (DirectMessage d : messages)
+                            {
+                                out.println(d.getId() + " " + d.getId());
                             }
                             
                             out.println(".");
