@@ -45,7 +45,7 @@ public class POPServerConnection implements Runnable
             PrintWriter out = new PrintWriter(_clientSocket.getOutputStream(), true);
 
             // send welcome message
-            out.println("+OK twitter-dm-server 1.0 ready");
+            out.println("+OK twitter-dm-server 0.2 ready");
 
             // read each line
             String line;

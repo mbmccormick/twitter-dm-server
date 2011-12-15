@@ -42,7 +42,7 @@ public class SMTPServerConnection implements Runnable
             PrintWriter out = new PrintWriter(_clientSocket.getOutputStream(), true);
 
             // send welcome message
-            out.println("220 twitter-dm-server 1.0 ready");
+            out.println("220 twitter-dm-server 0.2 ready");
 
             // read each line
             String line;
