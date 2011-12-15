@@ -41,7 +41,7 @@ public class POPServerConnection implements Runnable
             InputStream is = _clientSocket.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             
-            // loud output stream
+            // load output stream
             PrintWriter out = new PrintWriter(_clientSocket.getOutputStream(), true);
 
             // send welcome message
