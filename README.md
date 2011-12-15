@@ -52,6 +52,8 @@ To start this application, just run `java -cp ".:twitter4j-core-2.2.5.jar" Serve
 
 Use this application at your own risk. While this application has been tested thoroughly, on the above requirements, your mileage may vary. I take no responsibility for any harmful actions this application might cause.
 
+This application is a proof of concept only and is not meant to be used in a production environment. The authentication methods used by the POP and SMTP servers are insecure and in some cases the password is transmitted in plan text. Increased security (via SSL/STARTTLS) is on the roadmap for this project, however it is not ready at this time.
+
 
 ## License
 
