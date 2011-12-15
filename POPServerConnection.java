@@ -29,6 +29,7 @@ public class POPServerConnection implements Runnable
     {
         _host = host;
         _clientSocket = clientSocket;
+		_messages = new ArrayList<DirectMessage>();
         _messagesToDelete = new ArrayList<Long>();
     }
 
@@ -173,7 +174,6 @@ public class POPServerConnection implements Runnable
                         _messagesToDelete.add(message.getId());
                     
                         out.println("+OK message " + message.getId() + " marked for deletion");
-                        
                     }
                     else if (line.startsWith("NOOP"))
                     {
@@ -211,33 +211,31 @@ public class POPServerConnection implements Runnable
         }
         catch (Exception ex)
         {
-            // TODO: handle this exception
+            System.out.println(ex.getMessage());
         }
     }
     
     private boolean updateMessages()
     {
         try
-        {
-            _messages.clear();
-                        
+		{
+			_messages.clear();
+			
             Paging paging = new Paging(1);
             List<DirectMessage> messages;
             do {
                 messages = _twitter.getDirectMessages(paging);
-                //_messages.addAll(messages);
-                System.out.println("pagesize: " + messages.size());
+                _messages.addAll(messages);
+				
                 paging.setPage(paging.getPage() + 1);
             } while (messages.size() > 0 && paging.getPage() < 10);
-            
-            System.out.println("retrieved " + _messages.size() + " messages");
-            
-            return true;
         }
-        catch (TwitterException te)
-        {
-            System.out.println(te.getMessage());
+		catch (TwitterException te)
+		{
+			System.out.println(te.getMessage());
             return false;
         }
+
+		return true;
     }
 }
