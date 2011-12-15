@@ -29,7 +29,7 @@ public class POPServerConnection implements Runnable
     {
         _host = host;
         _clientSocket = clientSocket;
-		_messages = new ArrayList<DirectMessage>();
+        _messages = new ArrayList<DirectMessage>();
         _messagesToDelete = new ArrayList<Long>();
     }
 
@@ -218,24 +218,24 @@ public class POPServerConnection implements Runnable
     private boolean updateMessages()
     {
         try
-		{
-			_messages.clear();
-			
+        {
+            _messages.clear();
+            
             Paging paging = new Paging(1);
             List<DirectMessage> messages;
             do {
                 messages = _twitter.getDirectMessages(paging);
                 _messages.addAll(messages);
-				
+                
                 paging.setPage(paging.getPage() + 1);
             } while (messages.size() > 0 && paging.getPage() < 10);
         }
-		catch (TwitterException te)
-		{
-			System.out.println(te.getMessage());
+        catch (TwitterException te)
+        {
+            System.out.println(te.getMessage());
             return false;
         }
 
-		return true;
+        return true;
     }
 }
